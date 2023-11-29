@@ -1,6 +1,5 @@
 from random import randint, choices
 from random import shuffle
-from itertools import product, combinations, permutations
 from time import sleep
 
 TIME_NAMES = ['Botafogo','Bragantino', 'Palmeiras', 'Flamengo', 'Athletico-PR', 'Grêmio', 'Atlético-MG', 'Fluminense', 'Fortaleza', 'São Paulo', 'Internacional', 'Ceará', 'Corinthians', 'Santos', 'Vasco', 'Bahia', 'Atlético-GO', 'América-MG', 'Sport', 'Cuiabá']
@@ -61,32 +60,89 @@ class Time():
         self.estadio = self.time + ' Arena'
 
 class Confronto():
-    def __init__(self, TIMES):
-        self.times = TIMES
-        self.time1 = ''
-        self.time2 = ''
+    def __init__(self, times):
+
+        self.times = times
         self.placar = [0, 0]
         self.resultado = ''
         self.estadio = ''
         self.data = ''
+        self.confrontos = self.create_rodadas()
 
-        self.jogar(1)
+    def create_rodadas(self):
+        
+        times_dentro = self.times[:10]
+        times_fora = self.times[10:]
 
-    def jogar(self, rodada):
-        self.jogos = list(combinations(self.times, 2))
+        print(len(times_dentro), len(times_fora))
 
-        for i in range(len(self.jogos)):
+        confrontos = {
+            '1': [],
+            '2': [],
+            '3': [],
+            '4': [],
+            '5': [],
+            '6': [],
+            '7': [],
+            '8': [],
+            '9': [],
+            '10': [],
+            '11': [],
+            '12': [],
+            '13': [],
+            '14': [],
+            '15': [],
+            '16': [],
+            '17': [],
+            '18': [],
+            '19': [],
+            '20': [],
+            '21': [],
+            '22': [],
+            '23': [],
+            '24': [],
+            '25': [],
+            '26': [],
+            '27': [],
+            '28': [],
+            '29': [],
+            '30': [],
+            '31': [],
+            '32': [],
+            '33': [],
+            '34': [],
+            '35': [],
+            '36': [],
+            '37': [],
+            '38': [],
+        }
+
+        for i in range(1, 39):
+
+            for j in range(10):
+
+                if i < 20:
+                    confrontos[str(i)].append([times_dentro[j].time, times_fora[j].time])
+
+                else:
+                    confrontos[str(i)].append([times_fora[j].time, times_dentro[j].time])
+                    
+            times_dentro.insert(1, times_fora.pop())
+            times_fora.insert(0, times_dentro.pop())
+
+        return confrontos
+
             
 class Rodada():
     def __init__(self, TIMES):
         self.times = TIMES
         self.rodada = 'rodada'
-        self.jogos = []
+        self.jogos = {}
         self.add_jogos()
 
     def add_jogos(self):
-        self.jogos.append(Confronto(self.times))
-
+        self.jogos = Confronto(self.times)
+        print(self.jogos.confrontos)
 
 class Brasileirao():
 
@@ -99,7 +155,8 @@ class Brasileirao():
         self.add_time()
         self.add_rodada()
 
-    def get_rodada(self):
+    def get_rodada(self, i):
+
         return self.rodadas
     
     def add_rodada(self):
@@ -123,4 +180,4 @@ class Brasileirao():
 
 
 campeonato = Brasileirao()
-campeonato.get_rodada()
+campeonato.get_rodada(0)
