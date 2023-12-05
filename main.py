@@ -1,5 +1,5 @@
 from random import randint, choices
-from time import sleep
+import time
 from datetime import date, timedelta
 from collections import Counter
 
@@ -300,15 +300,34 @@ def choice(input_choice, rodada):
       print('As rodadas acabaram, se deseja reiniciar o campeonato digite 5')
       rodada = 38
       
+  
+    symbols = ['', '', '.', '.', '..', '..', '...', '...']
+    i = 0
+    a = 0
+    
+    while a < 15:
+      
+      i = (i + 1) % len(symbols)
+      print('\r\033[KOs times estão jogando%s' % symbols[i], flush=True, end='')
+      
+      time.sleep(0.2)
+      a += 1
+    print('\n')
     brasileirao.gerar_rodadas(rodada)
     brasileirao.get_rodadas(rodada)
     rodada += 1
   
   elif input_choice == '3':
+    
+    print('\n')
     brasileirao.get_artilheiros()
+    print('\n')
     
   elif input_choice == '4':
+    
+    print('\n')
     brasileirao.get_classificacao()
+    print('\n')
 
   elif input_choice == '5':
     input_rodada = int(input('Digite o número da rodada: '))
