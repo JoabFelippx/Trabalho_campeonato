@@ -1,4 +1,5 @@
 from random import randint, choices
+from time import sleep
 from datetime import date, timedelta
 from collections import Counter
 
@@ -6,13 +7,12 @@ TIME_NAMES = [
     'Botafogo', 'Bragantino', 'Palmeiras', 'Flamengo', 'Athletico-PR',
     'Grêmio', 'Atlético-MG', 'Fluminense', 'Fortaleza', 'São Paulo',
     'Internacional', 'Ceará', 'Corinthians', 'Santos', 'Vasco', 'Bahia',
-    'Atlético-GO', 'América-MG', 'Sport', 'Cuiabá'
-]
+    'Atlético-GO', 'América-MG', 'Sport', 'Cuiabá']
+
 POS = [
     "Goleiro", "Zagueiro Esquerdo", "Zagueiro Direito", "Lateral Direito",
     "Lateral Esquerdo", "Volante", "Meia Esquerda", "Meia Direita",
-    "Ponta Esquerda", "Ponta Direita", "Atacante"
-]
+    "Ponta Esquerda", "Ponta Direita", "Atacante"]
 
 peso_de_gols = [2, 3, 5, 8, 4, 6, 15, 4, 20, 25, 30]
 
@@ -42,7 +42,6 @@ class Jogador(Pessoa):
 
   def add_gols(self, gols):
     self.gols += gols
-
 
 class Time():
 
@@ -82,7 +81,7 @@ class Time():
 class Rodada():
 
   def __init__(self, times_obj):
-    self.__rodada = 0
+  
     self._jogos = {}
     self.times = times_obj
 
@@ -106,6 +105,7 @@ class Rodada():
     self._jogos = jogos
 
   def get_confrontos(self, n):
+    
     confrontos = []
     jogadores_casa = []
     jogadores_fora = []
@@ -164,9 +164,6 @@ class Rodada():
 
     return confrontos
 
-  def get_num_rodada(self):
-    return self.__rodada
-
 
 class Confronto():
 
@@ -177,7 +174,6 @@ class Confronto():
     self.time2 = time2
     self.resultado = resultado
     self.placar = placar
-
 
 class Brasileirao():
 
@@ -225,7 +221,7 @@ class Brasileirao():
   def get_rodadas(self, n_rodada):
         print(f'Rodada {n_rodada}')
         for i in self.__confrontos[n_rodada]:
-            print(f'{i.placar}')
+            print(f'{i.data} {i.placar}')
         
   def get_artilheiros(self):
     
@@ -240,13 +236,12 @@ class Brasileirao():
         except:
           self._jogadoresQntGols[time.time_nome] = {jogador.nome[0]: (jogador.gols, time.time_nome)}
     
-
-    
     for time in self._jogadoresQntGols:
       
       self._jogadoresQntGols[time] = sorted(self._jogadoresQntGols[time].items(), key=lambda x: x[1], reverse=True)
       aux_jogadores_gols = aux_jogadores_gols + self._jogadoresQntGols[time]
       aux_jogadores_gols = sorted(aux_jogadores_gols, key=lambda x: x[1], reverse=True)
+      
     pos = 1
     
     for i in aux_jogadores_gols:  
@@ -271,10 +266,80 @@ class Brasileirao():
       for time in self._classificacao[i]:
           print(f'{pos}ª {time} - {i}')
           pos += 1
-  
+          
     self._classificacao = {}
 
-if __name__ == '__main__':
-
-  brasileirao = Brasileirao()
+def menu(r):
   
+  print('-=-=-=-=-=-Campeonato Brasileiro-=-=-=-=-=-')
+  print('Ver times: 1')
+  
+  if r >= 39:
+    print(f'Ver rodada {38}: 2')
+  else:
+    print(f'Ver rodada {r}: 2')
+    
+  print('Ver artilheiros: 3')
+  print('Ver classificação: 4')
+  print('Ver um rodada específica: 5')
+  print('Qual rodada estamos: 6')
+  print('Reiniciar: 7')
+  print('Sair: 8')
+  print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+  
+def choice(input_choice, rodada):
+  
+  global brasileirao
+  
+  if input_choice == '1':
+    brasileirao.get_times()
+    
+  elif input_choice == '2':
+    
+    if rodada >= 39:
+      print('As rodadas acabaram, se deseja reiniciar o campeonato digite 5')
+      rodada = 38
+      
+    brasileirao.gerar_rodadas(rodada)
+    brasileirao.get_rodadas(rodada)
+    rodada += 1
+  
+  elif input_choice == '3':
+    brasileirao.get_artilheiros()
+    
+  elif input_choice == '4':
+    brasileirao.get_classificacao()
+
+  elif input_choice == '5':
+    input_rodada = int(input('Digite o número da rodada: '))
+    
+    if input_rodada > 38 or (rodada == 1 and input_rodada > 1):
+      print('Rodada inválida')
+      
+    else:
+      brasileirao.get_rodadas(input_rodada)
+    
+  elif input_choice == '6':
+    print(f'Rodada {rodada}')
+    
+  elif input_choice == '7':
+    rodada = 1
+    brasileirao = Brasileirao()
+    
+  else:
+    print('Opção inválida')
+  
+  return rodada
+
+if __name__ == '__main__':
+  
+  rodada = 1
+  brasileirao = Brasileirao()
+  input_choice = 0
+  
+  while input_choice != 7:
+    
+    menu(rodada)
+    input_choice = input('Escolha uma opção: ')
+    rodada = choice(input_choice, rodada)
+    
