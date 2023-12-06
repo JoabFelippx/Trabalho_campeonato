@@ -356,9 +356,14 @@ if __name__ == '__main__':
   brasileirao = Brasileirao()
   input_choice = 0
   
-  while input_choice != 7:
+  while True:
     
     menu(rodada)
     input_choice = input('Escolha uma opção: ')
+    
+    if input_choice == '8':
+      print('Programa encerrado')
+      break
+    
     rodada = choice(input_choice, rodada)
     
