@@ -300,19 +300,21 @@ def choice(input_choice, rodada):
       print('As rodadas acabaram, se deseja reiniciar o campeonato digite 5')
       rodada = 38
       
+    #ANIMAÇÃO DOS 3 PONTINHOSSSSS
   
-    symbols = ['', '', '.', '.', '..', '..', '...', '...']
-    i = 0
-    a = 0
+    # symbols = ['', '', '.', '.', '..', '..', '...', '...']
+    # i = 0
+    # a = 0
     
-    while a < 15:
+    # while a < 15:
       
-      i = (i + 1) % len(symbols)
-      print('\r\033[KOs times estão jogando%s' % symbols[i], flush=True, end='')
+    #   i = (i + 1) % len(symbols)
+    #   print('\r\033[KOs times estão jogando%s' % symbols[i], flush=True, end='')
       
-      time.sleep(0.2)
-      a += 1
-    print('\n')
+    #   time.sleep(0.2)
+    #   a += 1
+    # print('\n')
+    
     brasileirao.gerar_rodadas(rodada)
     brasileirao.get_rodadas(rodada)
     rodada += 1
