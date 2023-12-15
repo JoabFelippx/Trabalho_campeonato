@@ -184,17 +184,20 @@ def main():
   clock = pygame.time.Clock()
   
   while flag:
+    
     pygame.time.delay(50)
-    clock.tick(15)
+    clock.tick(20)
+    
     s.move()
     
     if s.body[0].pos == snack.pos:
       
-      if pos_color == 7:
+      if pos_color >= len(snake_colors):
         pos_color = 0
         
       s.addCube(snake_colors[pos_color])
       pos_color += 1
+      
 
       snack = cube(randomSnack(rows, s), color=(0, 255, 0))
 
